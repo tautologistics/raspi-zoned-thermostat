@@ -9,6 +9,7 @@ from bunch import Bunch
 from thermostat import create as create_thermostat
 from display import Display
 from button import Button
+from relay import Relay
 
 TEMPERATURE_SENSOR = Adafruit_DHT.DHT11
 TEMPERATURE_PIN_A = 4
@@ -16,6 +17,8 @@ TEMPERATURE_PIN_B = 17
 
 BUTTON_PIN_UP = 21
 BUTTON_PIN_DOWN = 20
+
+RELAY_PIN = 26
 
 def c_to_f(celcius):
   return 9.0 / 5.0 * celcius + 32
@@ -36,16 +39,25 @@ def main():
     display = Display()
     button_up = Button(BUTTON_PIN_UP)
     button_down = Button(BUTTON_PIN_DOWN)
+    relay = Relay(RELAY_PIN)
 
     button_count = 0
     while True:
       is_changed = workers.sensor_temp_a.changed or workers.sensor_temp_b.changed
-      if button_up.pressed:
+      button_up_pressed = button_up.pressed
+      button_down_pressed = button_down.pressed
+      if button_up_pressed and button_down_pressed:
+        is_changed = True
+        button_count = 0
+        relay.state = relay.OFF
+      elif button_up_pressed:
         is_changed = True
         button_count += 1
-      if button_down.pressed:
+        relay.state = relay.ON
+      elif button_down_pressed:
         is_changed = True
         button_count -= 1
+        relay.state = relay.OFF
       if is_changed:
         display.write_lines([
           '#1: %.02fF :: %.02f%%' % (
