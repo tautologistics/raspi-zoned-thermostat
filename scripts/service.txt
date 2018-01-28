@@ -1,0 +1,23 @@
+# Service definition
+/lib/systemd/system/thermostat_client.service
+
+# Reload after changes to /lib/systemd/system
+sudo systemctl daemon-reload
+
+# Enable service
+sudo systemctl enable thermostat_client.service
+
+# Disable service
+sudo systemctl disable thermostat_client.service
+
+# Check status
+sudo systemctl status thermostat_client.service
+ 
+# Start service
+sudo systemctl start thermostat_client.service
+ 
+# Stop service
+sudo systemctl stop thermostat_client.service
+ 
+# Check service's log
+sudo journalctl -f -u thermostat_client.service
