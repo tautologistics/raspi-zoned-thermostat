@@ -15,7 +15,7 @@ class Display(object):
   def __init__(self):
     self.line_height = 16
     self.font = ImageFont.truetype(
-      os.path.abspath(os.path.join(os.path.dirname(__file__), 'fonts', 'C&C Red Alert [INET].ttf')),
+      os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'fonts', 'C&C Red Alert [INET].ttf')),
       self.line_height,
     )
     self.load_device()
